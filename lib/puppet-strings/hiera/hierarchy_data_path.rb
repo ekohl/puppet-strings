@@ -13,20 +13,17 @@ module PuppetStrings::Hiera
     def matches
       result = {}
 
-      Dir.chdir(datadir) do
-        Dir['**'].each do |entry|
-          next unless File.file?(entry)
+      Dir.glob(File.join(datadir, '**', '*.yaml')).each do |entry|
+        next unless File.file?(entry)
 
-          regex.match(entry) do |match|
-            full_path = File.join(datadir, entry)
-            interpolations = {}
+        regex.match(entry) do |match|
+          interpolations = {}
 
-            mapping.each do |name, interpolation|
-              interpolations[interpolation] = match.named_captures[name]
-            end
-
-            result[full_path] = interpolations
+          mapping.each do |name, interpolation|
+            interpolations[interpolation] = match.named_captures[name]
           end
+
+          result[entry] = interpolations
         end
       end
 
