@@ -82,7 +82,7 @@ Options:
 Default value: `<%= value_string(defaults[param[:name]]) %>`
 
 <% end -%>
-<% if hiera_overrides[param[:name]] -%>
+<% if !hiera_overrides.empty? && hiera_overrides[param[:name]] -%>
 <details>
   <summary>Hiera overrides in a detailed table</summary>
 
